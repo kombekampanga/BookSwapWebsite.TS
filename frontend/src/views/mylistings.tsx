@@ -3,7 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Axios from "axios";
 import Modal from "react-modal";
 import "./editListingModal.css";
-import { BookDto } from "../models/BookDto";
+import {ListingsDto} from "../models/ListingsDto";
+import {BookDto} from "../models/BookDto";
 
 
 Modal.setAppElement("#root");
@@ -13,35 +14,35 @@ const MyListings = () => {
     const serverUrl = process.env.REACT_APP_SERVER_URL;
     const userId = user?.sub?.split("|")[1];
 
-    const [bookList, setBookList] = useState<BookDto[]>([]);
+    const [bookList, setBookList] = useState<ListingsDto>([]);
     const [editIsOpen, setEditIsOpen] = useState(false);
 
-    const [selectedBook, setSelectedBook] = useState<BookDto>();
 
     const [updatedBookTitle, setUpdatedBookTitle] = useState("");
     const [updatedBookAuthor, setUpdatedBookAuthor] = useState("");
     const [updatedBookGenre, setUpdatedBookGenre] = useState("");
+    const [selectedBook, setSelectedBook] = useState<BookDto>();
+
 
     useEffect(() => {
-      const getMyListings = async () => {
-        const token = await getAccessTokenSilently();
-  
-        Axios.get(serverUrl + "/api/listings/my-listings/get", {
-          params: { userId: userId },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-          .then((response) => {
-            setBookList(response.data);
-          })
-          .catch((err) => {
-            console.log(err.response);
-            alert(err.response.data);
-          });
-      };
+        getAccessTokenSilently()
+            .then((token) => {
+                return Axios.get<ListingsDto>(serverUrl + "/api/listings/my-listings/get", {
+                    params: { userId: userId },
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })})
 
-      getMyListings();
+            .then((response) => {
+                console.log('Response:', response.data);
+                setBookList(response.data);
+            })
+
+            .catch((err) => {
+                console.log(err.response);
+                alert(err.response.data);
+            });
     }, [getAccessTokenSilently, serverUrl, userId]);
 
     const deleteListing = async (bookId: number) => {
@@ -65,12 +66,12 @@ const MyListings = () => {
         });
     };
 
-    const editEventHandler = (val) => {
-      setSelectedBook(val);
+    const editEventHandler = (book: BookDto) => {
+      setSelectedBook(book);
       setEditIsOpen(true);
-      setUpdatedBookTitle(val.title);
-      setUpdatedBookAuthor(val.author);
-      setUpdatedBookGenre(val.genre);
+      setUpdatedBookTitle(book.title);
+      setUpdatedBookAuthor(book.author);
+      setUpdatedBookGenre(book.genres);
     };
 
     const updateListing = async (bookId) => {
@@ -108,17 +109,17 @@ const MyListings = () => {
 
     return (
       <div className="myListings">
-        {bookList.map((val) => {
+        {bookList.map((book) => {
           return (
             <div className="card">
-              <h1>{val.title}</h1>
-              <h4>By {val.author}</h4>
-              <p>{val.genres}</p>
+              <h1>{book.title}</h1>
+              <h4>By {book.author}</h4>
+              <p>{book.genres}</p>
 
               <div id="editListing">
                 <button
                   onClick={() => {
-                    editEventHandler(val);
+                    editEventHandler(book);
                   }}
                 >
                   Edit
@@ -127,12 +128,12 @@ const MyListings = () => {
                   onClick={() => {
                     const deleteConfirmed = window.confirm(
                       "Are you sure you want to delete this listing for " +
-                        val.title +
+                        book.title +
                         "?"
                     );
                     if (deleteConfirmed) {
                       console.log("Confirmed deletion");
-                      deleteListing(val.id);
+                      deleteListing(book.id);
                     } else {
                       console.log("pressed cancel");
                     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Axios from "axios";
-import { BookDto } from "../models/BookDto";
+import { ListingsDto } from "../models/ListingsDto";
 
 const ListABook = () => {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -11,13 +11,13 @@ const ListABook = () => {
     const [bookTitle, setBookTitle] = useState("");
     const [bookAuthor, setBookAuthor] = useState("");
     const [bookGenre, setBookGenre] = useState("");
-    const [bookList, setBookList] = useState<BookDto[]>([]);
+    const [bookList, setBookList] = useState<ListingsDto>([]);
 
     useEffect(() => {
       const getMyListings = async () => {
         const token = await getAccessTokenSilently();
 
-        Axios.get(serverUrl + "/api/listings/my-listings/get", {
+        Axios.get<ListingsDto>(serverUrl + "/api/listings/my-listings/get", {
           params: { userId: userId },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -96,12 +96,12 @@ const ListABook = () => {
 
           <h1>My Listings</h1>
           <br />
-          {bookList.map((val) => {
+          {bookList.map((book) => {
             return (
               <div className="card">
-                <h1>{val.title}</h1>
-                <h4>By {val.author}</h4>
-                <p>{val.genres}</p>
+                <h1>{book.title}</h1>
+                <h4>By {book.author}</h4>
+                <p>{book.genres}</p>
               </div>
             );
           })}
