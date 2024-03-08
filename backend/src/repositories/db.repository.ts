@@ -42,7 +42,7 @@ export class DbRepository {
         })
     }
 
-    executeQueryWithParameters = async <T>(query: string, values: string[]): Promise<T[]> => {
+    executeQueryWithParameters = async <T>(query: string, values: (string | boolean | number)[]): Promise<T[]> => {
         return new Promise((resolve, reject) => {
             this.pool.query(query, values, (err, result) => {
                 if (err) {

@@ -2,7 +2,8 @@ import {ListingsRepository} from "../repositories/listings.respository.js";
 import {ListingsDto} from "../models/ListingsDto.js";
 import {BookEntity} from "../models/BookEntity.js";
 import {MapToBookDto} from "../helpers/book.mapper.js";
-import {BookDto} from "../models/BookDto";
+import {AddListingRequestDto} from "../models/AddListingRequestDto";
+import {UpdateListingRequestDto} from "../models/UpdateListingRequestDto";
 
 export class ListingsService{
     private listingsRepository: ListingsRepository;
@@ -23,11 +24,35 @@ export class ListingsService{
         }
     }
 
+    GetUserListings = async (userId: string)=> {
+        try {
+            console.log("listings.service.GetUserListings called")
+            const userListings = await this.listingsRepository.GetUserListings(userId);
+            const listingsDto: ListingsDto = userListings.map((book: BookEntity) => MapToBookDto(book));
+            return listingsDto
+
+        } catch (e) {
+            throw(e);
+        }
+    }
+
+    GetFilteredGenreListings = async (genres: string[])=> {
+        try {
+            console.log("listings.service.GetFilteredGenreListings called")
+            const Listings = await this.listingsRepository.GetFilteredGenreListings(genres);
+            const listingsDto: ListingsDto = Listings.map((book: BookEntity) => MapToBookDto(book));
+            return listingsDto
+
+        } catch (e) {
+            throw(e);
+        }
+    }
+
     GetMyListings = async (userId: string)=> {
         try {
             console.log("listings.service.GetMyListings called")
-            const allListings = await this.listingsRepository.GetMyListings(userId);
-            const listingsDto: ListingsDto = allListings.map((book: BookEntity) => MapToBookDto(book));
+            const myListings = await this.listingsRepository.GetMyListings(userId);
+            const listingsDto: ListingsDto = myListings.map((book: BookEntity) => MapToBookDto(book));
             return listingsDto
 
         } catch (e) {
@@ -35,11 +60,11 @@ export class ListingsService{
         }
     }
 
-    AddListing = async (userId: string, userEmail: string, bookTitle: string, bookAuthor: string, bookGenre: string)=> {
+    AddListing = async (addListingsRequestDto: AddListingRequestDto)=> {
         try {
             console.log("listings.service.AddListing called")
 
-            const allListings = await this.listingsRepository.AddListing(userId, userEmail, bookTitle, bookAuthor, bookGenre);
+            const allListings = await this.listingsRepository.AddListing(addListingsRequestDto);
             const listingsDto: ListingsDto = allListings.map((book: BookEntity) => MapToBookDto(book));
             return listingsDto
 
@@ -48,14 +73,38 @@ export class ListingsService{
         }
     }
 
-    UpdateListing = async (userId: string, bookId: string, bookTitle: string, bookAuthor: string, bookGenre: string)=> {
+    UpdateListing = async (updateListingsRequestDto: UpdateListingRequestDto)=> {
         try {
             console.log("listings.service.UpdateListing called")
-            const allListings = await this.listingsRepository.UpdateListing(userId, bookId, bookTitle, bookAuthor, bookGenre);
-            console.log(`service response: ${allListings}`)
-            //const listingsDto: ListingsDto = allListings.map((book: BookEntity) => MapToBookDto(book));
-            //return listingsDto
+            await this.listingsRepository.UpdateListing(updateListingsRequestDto);
 
+        } catch (e) {
+            throw(e);
+        }
+    }
+
+    UpdateListingFromApprovedRequest = async (bookId: string, userId: string, status: string)=> {
+        try {
+            console.log("listings.service.UpdateListingFromApprovedRequest called")
+            await this.listingsRepository.UpdateListingFromApprovedRequest(bookId, userId, status);
+        } catch (e) {
+            throw(e);
+        }
+    }
+
+    UpdateListingFromDeclinedRequest = async (bookId: string, userId: string)=> {
+        try {
+            console.log("listings.service.UpdateListingFromDeclinedRequest called")
+            await this.listingsRepository.UpdateListingFromDeclinedRequest(bookId, userId);
+        } catch (e) {
+            throw(e);
+        }
+    }
+
+    UpdateListingWhenRequested = async (bookId: string, userId: string)=> {
+        try {
+            console.log("listings.service.UpdateListingWhenRequested called")
+            await this.listingsRepository.UpdateListingWhenRequested(bookId, userId);
         } catch (e) {
             throw(e);
         }
@@ -70,6 +119,29 @@ export class ListingsService{
             return listingsDto
 
         } catch (e) {
+            throw(e);
+        }
+    }
+
+    GetBook = async (bookId: string)=> {
+        try {
+            console.log("listings.service.GetBook called")
+            const responseList = await this.listingsRepository.GetBook(bookId)
+            const bookEntity = responseList[0];
+            return MapToBookDto(bookEntity)
+
+        } catch (e) {
+            throw(e);
+        }
+    }
+
+    GetGenres = async () => {
+        console.log("listings.service.GetGenres called")
+        try {
+            return await this.listingsRepository.GetGenres()
+
+        } catch (e) {
+            console.log(e);
             throw(e);
         }
     }

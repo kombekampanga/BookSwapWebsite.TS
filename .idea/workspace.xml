@@ -5,30 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0ec4e1dc-aa4a-4f19-afd7-60a385752ce5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/controllers/listings.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/helpers/book.mapper.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/models/BookEntity.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/models/ListingsDto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/repositories/db.repository.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/repositories/listings.respository.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/services/listings.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/models/ListingsDto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/views/mylistings2.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/models/AddListingRequestDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/models/GenreDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/models/UpdateListingRequestDto.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/api-calls/listings.router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api-calls/listings.router.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/build/asset-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/build/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/static/css/main.ad046f76.chunk.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/build/static/css/main.ad046f76.chunk.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/2.58068cd8.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/2.58068cd8.chunk.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/2.58068cd8.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/main.a8f9a5e6.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/main.a8f9a5e6.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/runtime-main.fdfc613a.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/build/static/js/runtime-main.fdfc613a.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/listabook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/listabook.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/listings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/listings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/mylistings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/mylistings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/controllers/listings.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controllers/listings.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/repositories/db.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/db.repository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/repositories/listings.respository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/listings.respository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/services/listings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/listings.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,25 +41,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;convert-to-typescript&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/kombe/Desktop/BookSwapWebsite.TS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\kombe\\Desktop\\BookSwapWebsite.TS\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "convert-to-typescript",
+    "last_opened_file_path": "C:/Users/kombe/Desktop/BookSwapWebsite.TS/backend/src/models",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\kombe\\Desktop\\BookSwapWebsite.TS\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\frontend\src\models" />
       <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\backend\src\models" />
+      <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\frontend\src\models" />
       <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\frontend" />
       <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\backend" />
     </key>
@@ -93,7 +78,7 @@
       <workItem from="1709775804488" duration="3861000" />
       <workItem from="1709780696375" duration="27841000" />
       <workItem from="1709842980100" duration="6189000" />
-      <workItem from="1709849218467" duration="3686000" />
+      <workItem from="1709849218467" duration="12226000" />
     </task>
     <servers />
   </component>
