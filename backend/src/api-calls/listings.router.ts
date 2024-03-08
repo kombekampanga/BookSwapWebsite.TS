@@ -6,7 +6,7 @@ const listingsRouter = express.Router();
 const listingsController = new ListingsController();
 
 // Get all Listings
-listingsRouter.get("/get", checkJwt, listingsController.GetAllListings)
+listingsRouter.get("/get", listingsController.GetAllListings)
 
 // Get all of particular user's listings
 listingsRouter.get("/get/userId=:userId", listingsController.GetUserListings);

@@ -5,6 +5,8 @@ import Modal from "react-modal";
 import "./editListingModal.css";
 import {ListingsDto} from "../models/ListingsDto";
 import {BookDto} from "../models/BookDto";
+import {GenreDto} from "../models/GenreDto";
+import {UpdateListingRequestDto} from "../models/UpdateListingRequestDto";
 
 
 Modal.setAppElement("#root");
@@ -12,7 +14,7 @@ Modal.setAppElement("#root");
 const MyListings = () => {
   const { user, getAccessTokenSilently } = useAuth0();
     const serverUrl = process.env.REACT_APP_SERVER_URL;
-    const userId = user?.sub?.split("|")[1];
+    const userId = user?.sub?.split("|")[1] ?? ""
 
     const [bookList, setBookList] = useState<ListingsDto>([]);
     const [editIsOpen, setEditIsOpen] = useState(false);
@@ -20,32 +22,60 @@ const MyListings = () => {
 
     const [updatedBookTitle, setUpdatedBookTitle] = useState("");
     const [updatedBookAuthor, setUpdatedBookAuthor] = useState("");
-    const [updatedBookGenre, setUpdatedBookGenre] = useState("");
+    const [updatedBookGenres, setUpdatedBookGenres] = useState<string[]>([]);
     const [selectedBook, setSelectedBook] = useState<BookDto>();
+    const [updatedBookDescription, setUpdatedBookDescription] = useState("");
+    const [updatedBookImageUrl, setUpdatedBookImageUrl] = useState("");
+    const [imageHasChanged, setImageHasChanged] = useState(false);
+    const [uploadedBookImage, setUploadedBookImage] = useState<File | null>(null);
+    const [saving, setSaving] = useState(false);
+    const [updatedAvailableForSwap, setUpdatedAvailableForSwap] = useState<boolean>(false);
+    const [updatedAvailableToGiveAway, setUpdatedAvailableToGiveAway] =
+        useState<boolean>(false);
+    const [genreList, setGenreList] = useState<GenreDto[]>([]);
 
+    const getMyListings = async () => {
+        const token = await getAccessTokenSilently();
 
-    useEffect(() => {
-        getAccessTokenSilently()
-            .then((token) => {
-                return Axios.get<ListingsDto>(serverUrl + "/api/listings/my-listings/get", {
-                    params: { userId: userId },
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })})
-
+        Axios.get<ListingsDto>(serverUrl + "/api/listings/my-listings/get", {
+            params: { userId: userId },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
             .then((response) => {
                 console.log('Response:', response.data);
                 setBookList(response.data);
             })
-
             .catch((err) => {
                 console.log(err.response);
                 alert(err.response.data);
             });
-    }, [getAccessTokenSilently, serverUrl, userId]);
+    };
 
-    const deleteListing = async (bookId: number) => {
+    const getGenres = async () => {
+        const token = await getAccessTokenSilently();
+
+        Axios.get<GenreDto[]>(serverUrl + "/api/listings/genres/get", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((response) => {
+                setGenreList(response.data);
+            })
+            .catch((err) => {
+                console.log(err.response);
+                alert(err.response.data);
+            });
+    };
+
+    useEffect(() => {
+        getMyListings();
+        getGenres();
+    }, [serverUrl, userId]);
+
+    const deleteListing = async (bookId: string) => {
       const token = await getAccessTokenSilently();
       console.log(bookId);
       Axios.delete(serverUrl + "/api/listings/my-listings/delete/", {
@@ -67,45 +97,131 @@ const MyListings = () => {
     };
 
     const editEventHandler = (book: BookDto) => {
-      setSelectedBook(book);
-      setEditIsOpen(true);
-      setUpdatedBookTitle(book.title);
-      setUpdatedBookAuthor(book.author);
-      setUpdatedBookGenre(book.genres);
+        setSelectedBook(book);
+        setEditIsOpen(true);
+        setUpdatedBookTitle(book.title);
+        setUpdatedBookAuthor(book.author);
+        if (book.genres !== null) {
+            setUpdatedBookGenres(book.genres.split(","));
+        }
+        setUpdatedBookDescription(book.description);
+        setUpdatedBookImageUrl(book.image);
+        setImageHasChanged(false);
+        // !! to turn integer into boolean
+        setUpdatedAvailableForSwap(!!book.swap);
+        setUpdatedAvailableToGiveAway(!!book.giveAway);
     };
 
-    const updateListing = async (bookId) => {
-      const token = await getAccessTokenSilently();
-      console.log(bookId);
-      Axios.put(
-        serverUrl + "/api/listings/my-listings/update",
-        {
-          userId: userId,
-          bookId: bookId,
-          bookTitle: updatedBookTitle,
-          bookAuthor: updatedBookAuthor,
-          bookGenre: updatedBookGenre,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-        .then(() => {
-          alert(updatedBookTitle + " listing updated");
-          setUpdatedBookTitle("");
-          setUpdatedBookAuthor("");
-          setUpdatedBookGenre("");
-          setEditIsOpen(false);
-          setSelectedBook(undefined);
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.log(err.response);
-          alert(err.response.data);
-        });
+    const finishEditEventHandler = () => {
+        setSelectedBook(undefined);
+        setEditIsOpen(false);
+        setUpdatedBookTitle("");
+        setUpdatedBookAuthor("");
+        setUpdatedBookGenres([]);
+        setUpdatedBookDescription("");
+        setUpdatedBookImageUrl("");
+        setImageHasChanged(false);
+        setImageHasChanged(false);
+        setUpdatedAvailableForSwap(false);
+        setUpdatedAvailableToGiveAway(false);
     };
+
+    const updateListing = async (bookId: string) => {
+        const token = await getAccessTokenSilently();
+
+        // Add to database
+        const addListingToDatabase = (imageUrl: string) => {
+            const updateListingsRequest: UpdateListingRequestDto = {
+                userId: userId,
+                bookId: bookId,
+                bookTitle: updatedBookTitle,
+                bookAuthor: updatedBookAuthor,
+                bookGenres: updatedBookGenres.toString(),
+                bookDescription: updatedBookDescription,
+                bookImageUrl: imageUrl,
+                availableForSwap: updatedAvailableForSwap,
+                availableToGiveAway: updatedAvailableToGiveAway,
+            }
+            Axios.put(
+                serverUrl + "/api/listings/my-listings/update",
+                {
+                    updateListingsRequest
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+                .then((response) => {
+                    setSaving(false);
+                    alert(updatedBookTitle + " listing updated");
+                    console.log(response);
+                    finishEditEventHandler();
+                    window.location.reload();
+                })
+                .catch((err) => {
+                    setSaving(false);
+                    console.log(err.response);
+                    alert(err.response.data);
+                });
+        };
+
+        // If new image has been added, upload the image to cloudinary
+        if (imageHasChanged && uploadedBookImage !== null) {
+            const formData = new FormData();
+            formData.append("file", uploadedBookImage);
+            formData.append("upload_preset", "ju4duels");
+
+            Axios.post(
+                "https://api.cloudinary.com/v1_1/dmxlueraz/image/upload",
+                formData
+            )
+                .then((response) => {
+                    console.log(response.data.url);
+                    setUpdatedBookImageUrl(response.data.url);
+                    addListingToDatabase(response.data.url);
+                })
+                .catch((err) => {
+                    setSaving(false);
+                    console.log(err.response);
+                    alert(err.response.data);
+                });
+        } else {
+            addListingToDatabase(updatedBookImageUrl);
+        }
+    };
+
+    const filterFunction = () => {
+        const input = document.getElementById("myInput")as HTMLInputElement;
+        const filter = input?.value.toUpperCase();
+        const div = document.getElementById("myDropdown");
+        let a = div?.getElementsByTagName("span");
+        if (a !== undefined){
+            for (let i = 0; i < a.length; i++) {
+                const txtValue = a[i].textContent || a[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    a[i].style.display = "";
+                } else {
+                    a[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    const myFunction = () => {
+        const dropdownElement = document.getElementById("myDropdown");
+
+        if (dropdownElement) { // Check if dropdownElement is not null
+            const currentDisplay = dropdownElement.style.display;
+
+            if (currentDisplay === "none") {
+                dropdownElement.style.display = "inline";
+            } else {
+                dropdownElement.style.display = "none";
+            }
+        }
+    }
 
     return (
       <div className="myListings">
@@ -193,7 +309,7 @@ const MyListings = () => {
                   name="Genre"
                   defaultValue={selectedBook?.genres}
                   onChange={(e) => {
-                    setUpdatedBookGenre(e.target.value);
+                      setUpdatedBookGenres([e.target.value]);
                   }}
                 />
               </div>
@@ -208,7 +324,12 @@ const MyListings = () => {
                 </button>
                 <button
                   onClick={() => {
-                    updateListing(selectedBook?.id);
+                      if (selectedBook == undefined){
+                          finishEditEventHandler()
+                      } else {
+                          updateListing(selectedBook?.id);
+                      }
+
                   }}
                 >
                   Save

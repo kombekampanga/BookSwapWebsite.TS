@@ -6,18 +6,19 @@ import Axios from "axios";
 import { NavBar, Footer } from "./components";
 import {
   Home,
-  Profile,
-  //ExternalApi,
+  MyAccount,
   Listings,
   ListABook,
   MyListings,
+  RequestABook,
+  RespondToBookRequest,
 } from "./views";
 
 import "./app.css";
 import ProtectedRoute from "./auth/protected-route";
 
 const App = () => {
-  //check if the logged in user is in the database. If they aren't then add them
+  //check if the logged-in user is in the database. If they aren't then add them
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -54,22 +55,26 @@ const App = () => {
   }
 
   return (
-    <div id="app" className="d-flex flex-column h-100">
-      <NavBar />
-      <div className="container flex-grow-1">
-        <div className="mt-5">
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <ProtectedRoute path="/profile" component={Profile} />
-            <Route path="/listings" component={Listings} />
-            <ProtectedRoute path="/listabook" component={ListABook} />
-            <ProtectedRoute path="/mylistings" component={MyListings} />
-            {/* <ProtectedRoute path="/external-api" component={ExternalApi} /> */}
-          </Switch>
+      <div id="app" className="d-flex flex-column h-100">
+        <NavBar />
+        <div className="container flex-grow-1">
+          <div className="mt-5">
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <ProtectedRoute path="/myaccount" component={MyAccount} />
+              <Route path="/listings" component={Listings} />
+              <ProtectedRoute path="/listabook" component={ListABook} />
+              <ProtectedRoute path="/mylistings" component={MyListings} />
+              <ProtectedRoute path="/request-a-book" component={RequestABook} />
+              <ProtectedRoute
+                  path="/respond-to-request"
+                  component={RespondToBookRequest}
+              />
+            </Switch>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
   );
 };
 

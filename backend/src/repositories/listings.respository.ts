@@ -46,16 +46,16 @@ export class ListingsRepository {
         return await this.dbRepository.executeQueryWithParameters<BookEntity>(sqlSelect, [userId, isActive])
     })
 
-    AddListing = (async (addListingsRequestDto: AddListingRequestDto): Promise<BookEntity[]> => {
-        const imageUrl = addListingsRequestDto.imageUrl;
-        const userId = addListingsRequestDto.userId;
-        const userEmail = addListingsRequestDto.userEmail;
-        const bookTitle = addListingsRequestDto.bookTitle;
-        const bookAuthor = addListingsRequestDto.bookAuthor;
-        const bookGenres = addListingsRequestDto.bookGenres;
-        const availableForSwap = addListingsRequestDto.availableForSwap;
-        const availableToGiveAway = addListingsRequestDto.availableToGiveAway;
-        const bookDescription = addListingsRequestDto.bookDescription;
+    AddListing = (async (addListingRequestDto: AddListingRequestDto): Promise<BookEntity[]> => {
+        const imageUrl = addListingRequestDto.imageUrl;
+        const userId = addListingRequestDto.userId;
+        const userEmail = addListingRequestDto.userEmail;
+        const bookTitle = addListingRequestDto.bookTitle;
+        const bookAuthor = addListingRequestDto.bookAuthor;
+        const bookGenres = addListingRequestDto.bookGenres;
+        const availableForSwap = addListingRequestDto.availableForSwap;
+        const availableToGiveAway = addListingRequestDto.availableToGiveAway;
+        const bookDescription = addListingRequestDto.bookDescription;
 
         const sqlInsert =
             "INSERT INTO books (title, author, genres, description, userId, userEmail, image, swap, giveAway, modifiedOn, active, status) VALUES (?,?,(?),?,?,?,?,?,?,CURRENT_TIMESTAMP, TRUE, 'open')";
@@ -75,16 +75,16 @@ export class ListingsRepository {
             ])
     })
 
-    UpdateListing = (async (updateListingsRequestDto: UpdateListingRequestDto): Promise<BookEntity[]> => {
-        const userId = updateListingsRequestDto.userId;
-        const bookId = updateListingsRequestDto.bookId;
-        const bookTitle = updateListingsRequestDto.bookTitle;
-        const bookAuthor = updateListingsRequestDto.bookAuthor;
-        const bookGenre = updateListingsRequestDto.bookGenres;
-        const bookDescription = updateListingsRequestDto.bookDescription;
-        const bookImageUrl = updateListingsRequestDto.bookImageUrl;
-        const availableForSwap = updateListingsRequestDto.availableForSwap;
-        const availableToGiveAway = updateListingsRequestDto.availableToGiveAway;
+    UpdateListing = (async (updateListingRequestDto: UpdateListingRequestDto): Promise<BookEntity[]> => {
+        const userId = updateListingRequestDto.userId;
+        const bookId = updateListingRequestDto.bookId;
+        const bookTitle = updateListingRequestDto.bookTitle;
+        const bookAuthor = updateListingRequestDto.bookAuthor;
+        const bookGenre = updateListingRequestDto.bookGenres;
+        const bookDescription = updateListingRequestDto.bookDescription;
+        const bookImageUrl = updateListingRequestDto.bookImageUrl;
+        const availableForSwap = updateListingRequestDto.availableForSwap;
+        const availableToGiveAway = updateListingRequestDto.availableToGiveAway;
 
         const sqlUpdate =
             "UPDATE books SET title = ?, author = ?, genres = ?, description = ?, image = ?, swap = ?, giveAway = ?, modifiedOn = CURRENT_TIMESTAMP WHERE id = ? AND userId = ?";

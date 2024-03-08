@@ -1,5 +1,5 @@
 export type BookDto = {
-    id: number;
+    id: string;
     title: string;
     author: string;
     genres: string;

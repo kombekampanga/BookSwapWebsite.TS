@@ -117,7 +117,7 @@ export class AccountService {
         }
     }
 
-    GetRequestDetails = async (userId: number, requestId: number)=> {
+    GetRequestDetails = async (userId: string, requestId: string)=> {
         console.log("account.service.GetRequestDetails called")
 
         try {

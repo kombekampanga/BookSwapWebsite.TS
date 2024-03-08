@@ -1,5 +1,5 @@
 export type BookEntity = {
-    id: number;
+    id: string;
     title: string;
     author: string;
     genres: string;

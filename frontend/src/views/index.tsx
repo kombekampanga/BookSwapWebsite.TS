@@ -4,5 +4,16 @@ import {Profile} from "./profile";
 import {Listings} from "./listings";
 import {MyListings} from "./mylistings";
 import {ListABook} from "./listabook";
+import MyAccount from "./myaccount";
+import RequestABook from "./requestbook";
+import RespondToBookRequest from "./respond-to-book-request";
 
-export {Home, Listings, MyListings, Profile, ListABook };
+export {
+    Home,
+    Listings,
+    MyListings,
+    MyAccount,
+    ListABook,
+    RequestABook,
+    RespondToBookRequest,
+};

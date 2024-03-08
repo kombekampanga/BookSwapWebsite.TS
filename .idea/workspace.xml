@@ -5,17 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0ec4e1dc-aa4a-4f19-afd7-60a385752ce5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/api-calls/my-account.router.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/controllers/account.controller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/models/NotificationDto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/models/RequestDto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/repositories/account.repository.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/services/account.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/models/BooksRequestedByUserDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/models/BooksRequestedFromUserDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/BookList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/AddListingRequestDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/BooksRequestedByUserDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/BooksRequestedFromUserDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/GenreDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/NotificationDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/RequestDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/UpdateListingRequestDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/views/myaccount.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/views/requestbook.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/views/respond-to-book-request.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/api-calls/listings.router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api-calls/listings.router.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/controllers/listings.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controllers/listings.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/models/AddListingRequestDto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/models/AddListingRequestDto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/models/BookDto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/models/BookDto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/models/BookEntity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/models/BookEntity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/models/NotificationDto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/models/NotificationDto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/models/RequestDto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/models/RequestDto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/models/UpdateListingRequestDto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/models/UpdateListingRequestDto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/repositories/account.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/account.repository.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/repositories/listings.respository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/listings.respository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/services/account.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/account.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/services/listings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/listings.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/models/BookDto.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/models/BookDto.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/editListingModal.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/editListingModal.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/listabook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/listabook.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/listings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/listings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/mylistings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/mylistings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/views/mylistings2.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +74,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "convert-to-typescript",
-    "last_opened_file_path": "C:/Users/kombe/Desktop/BookSwapWebsite.TS/backend/src/models",
+    "last_opened_file_path": "C:/Users/kombe/Desktop/BookSwapWebsite.TS/frontend/src/models",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -60,8 +86,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\backend\src\models" />
       <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\frontend\src\models" />
+      <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\backend\src\models" />
       <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\frontend" />
       <recent name="C:\Users\kombe\Desktop\BookSwapWebsite.TS\backend" />
     </key>
@@ -80,7 +106,7 @@
       <workItem from="1709775804488" duration="3861000" />
       <workItem from="1709780696375" duration="27841000" />
       <workItem from="1709842980100" duration="6189000" />
-      <workItem from="1709849218467" duration="22763000" />
+      <workItem from="1709849218467" duration="49135000" />
     </task>
     <servers />
   </component>

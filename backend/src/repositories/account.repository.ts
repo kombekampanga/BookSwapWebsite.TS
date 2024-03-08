@@ -1,5 +1,7 @@
 import {DbRepository} from "./db.repository";
 import {NotificationDto} from "../models/NotificationDto";
+import {BooksRequestedByUserDto} from "../models/BooksRequestedByUserDto";
+import {BooksRequestedFromUserDto} from "../models/BooksRequestedFromUserDto";
 import {RequestDto} from "../models/RequestDto";
 import {BookEntity} from "../models/BookEntity";
 import {BookDto} from "../models/BookDto";
@@ -47,11 +49,11 @@ export class AccountRepository {
         return await this.dbRepository.executeQueryWithParameters<NotificationDto>(sqlDelete, [userId, notificationId])
     })
 
-    GetRequestedBooks = (async (userId: string): Promise<BookDto[]> => {
+    GetRequestedBooks = (async (userId: string): Promise<BooksRequestedByUserDto[]> => {
         console.log("listings.repository.GetRequestedBooks called")
         const sqlSelect =
             "SELECT requests.swap, requests.createdOn, requestedBook.title, requestedBook.author, requestedBook.genres, requestedBook.userEmail AS listerEmail, requestedBook.image, bookImSwapping.title AS bookImSwappingTitle, bookImSwapping.author AS bookImSwappingAuthor, bookImSwapping.genres AS bookImSwappingGenre, bookImSwapping.image AS bookImSwappingImage FROM requests JOIN books requestedBook ON requests.bookId = requestedBook.id LEFT JOIN books bookImSwapping ON requests.swappedBook = bookImSwapping.id WHERE requesterId = ? AND requests.active = TRUE";
-        return await this.dbRepository.executeQueryWithParameter<BookDto>(sqlSelect, userId)
+        return await this.dbRepository.executeQueryWithParameter<BooksRequestedByUserDto>(sqlSelect, userId)
     })
 
     RequestBook = (async (bookId: string, listerId: number, requesterId: number, swap: boolean, requesterEmail: string): Promise<any[]> => {
@@ -61,20 +63,20 @@ export class AccountRepository {
         return await this.dbRepository.executeQueryWithParameters(sqlInsert, [bookId, listerId, requesterId, requesterEmail, swap])
     })
 
-    UpdateRequest = (async (requestId: number, status: string, swappedBookId: number, listerId: number): Promise<BookEntity[]> => {
+    UpdateRequest = (async (requestId: number, status: string, swappedBookId: number, listerId: number): Promise<RequestDto[]> => {
         const sqlUpdate =
             "UPDATE requests SET active = false, status = ?, closedOn = CURRENT_TIMESTAMP, swappedBook = ? WHERE id = ? AND listerId = ?";
-        return await this.dbRepository.executeQueryWithParameters<BookEntity>(sqlUpdate, [status, swappedBookId, requestId, listerId])
+        return await this.dbRepository.executeQueryWithParameters<RequestDto>(sqlUpdate, [status, swappedBookId, requestId, listerId])
     })
 
-    GetBooksRequested = (async (userId: string): Promise<BookDto[]> => {
+    GetBooksRequested = (async (userId: string): Promise<BooksRequestedFromUserDto[]> => {
         console.log("listings.repository.GetBooksRequested called")
         const sqlSelect =
             "SELECT requests.id AS requestId, requests.bookId, requests.swap, requests.createdOn, users.email AS requestedBy, requestedBook.title, requestedBook.author, requestedBook.genres, requestedBook.image, bookOfferedForSwapping.title AS bookOfferedForSwappingTitle, bookOfferedForSwapping.author AS bookOfferedForSwappingAuthor, bookOfferedForSwapping.genres AS bookOfferedForSwappingGenre, bookOfferedForSwapping.image AS bookOfferedForSwappingImage FROM requests JOIN books requestedBook ON requests.bookId = requestedBook.id JOIN users ON requests.requesterId = users.userId LEFT JOIN books bookOfferedForSwapping ON requests.swappedBook = bookOfferedForSwapping.id WHERE listerId = ? AND requests.active = TRUE";
-        return await this.dbRepository.executeQueryWithParameter<BookDto>(sqlSelect, userId)
+        return await this.dbRepository.executeQueryWithParameter<BooksRequestedFromUserDto>(sqlSelect, userId)
     })
 
-    GetRequestDetails = (async (userId: number, requestId: number): Promise<RequestDto[]> => {
+    GetRequestDetails = (async (userId: string, requestId: string): Promise<RequestDto[]> => {
         console.log("listings.repository.GetBooksRequested called")
         const sqlSelect = "SELECT * FROM requests WHERE listerId = ? AND id = ?";
         return await this.dbRepository.executeQueryWithParameters<RequestDto>(sqlSelect, [userId, requestId])

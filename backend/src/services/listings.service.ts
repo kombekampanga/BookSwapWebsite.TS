@@ -60,10 +60,10 @@ export class ListingsService{
         }
     }
 
-    AddListing = async (addListingsRequestDto: AddListingRequestDto)=> {
+    AddListing = async (addListingRequestDto: AddListingRequestDto)=> {
         try {
             console.log("listings.service.AddListing called")
-            await this.listingsRepository.AddListing(addListingsRequestDto);
+            await this.listingsRepository.AddListing(addListingRequestDto);
 
 
         } catch (e) {
@@ -71,10 +71,10 @@ export class ListingsService{
         }
     }
 
-    UpdateListing = async (updateListingsRequestDto: UpdateListingRequestDto)=> {
+    UpdateListing = async (updateListingRequestDto: UpdateListingRequestDto)=> {
         try {
             console.log("listings.service.UpdateListing called")
-            await this.listingsRepository.UpdateListing(updateListingsRequestDto);
+            await this.listingsRepository.UpdateListing(updateListingRequestDto);
 
         } catch (e) {
             throw(e);
