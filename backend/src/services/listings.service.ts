@@ -48,10 +48,10 @@ export class ListingsService{
         }
     }
 
-    GetMyListings = async (userId: string)=> {
+    GetMyListings = async (userId: string, isActive: boolean)=> {
         try {
             console.log("listings.service.GetMyListings called")
-            const myListings = await this.listingsRepository.GetMyListings(userId);
+            const myListings = await this.listingsRepository.GetMyListings(userId, isActive);
             const listingsDto: ListingsDto = myListings.map((book: BookEntity) => MapToBookDto(book));
             return listingsDto
 
@@ -63,10 +63,8 @@ export class ListingsService{
     AddListing = async (addListingsRequestDto: AddListingRequestDto)=> {
         try {
             console.log("listings.service.AddListing called")
+            await this.listingsRepository.AddListing(addListingsRequestDto);
 
-            const allListings = await this.listingsRepository.AddListing(addListingsRequestDto);
-            const listingsDto: ListingsDto = allListings.map((book: BookEntity) => MapToBookDto(book));
-            return listingsDto
 
         } catch (e) {
             throw(e);
@@ -114,9 +112,7 @@ export class ListingsService{
         try {
             console.log("listings.service.DeleteListing called")
 
-            const allListings = await this.listingsRepository.DeleteListing(bookId, userId);
-            const listingsDto: ListingsDto = allListings.map((book: BookEntity) => MapToBookDto(book));
-            return listingsDto
+            return await this.listingsRepository.DeleteListing(bookId, userId);
 
         } catch (e) {
             throw(e);

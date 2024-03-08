@@ -4,15 +4,6 @@ import {ListingsController} from "../controllers/listings.controller.js";
 
 const listingsRouter = express.Router();
 const listingsController = new ListingsController();
-const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: process.env.SQL_PASS,
-  database: "bookswap",
-});
-
-import  mysql from "mysql2";
-import { BookDto } from "../models/BookDto.js";
 
 // Get all Listings
 listingsRouter.get("/get", checkJwt, listingsController.GetAllListings)
@@ -23,8 +14,8 @@ listingsRouter.get("/get/userId=:userId", listingsController.GetUserListings);
 // Get listings filtered by genre
 listingsRouter.get("/filtered/get", listingsController.GetFilteredGenreListings);
 
-// Get my listings
-listingsRouter.get("/my-listings/get", checkJwt, listingsController.GetMyListings);
+// Get my active listings
+listingsRouter.get("/my-listings/get", checkJwt, listingsController.GetMyActiveListings);
 
 // Add a listing
 listingsRouter.post("/my-listings/insert", checkJwt, listingsController.AddListing);
@@ -50,6 +41,7 @@ listingsRouter.put("/my-listings/update/request-sent", checkJwt, listingsControl
 // update a listing when request is declined (decrement no of requests and set requested as false if numberOfRequests = 0)
 //TODO
 listingsRouter.put("/my-listings/update/request-declined", checkJwt, listingsController.UpdateListingFromDeclinedRequest)
+
 export {
   listingsRouter,
 };

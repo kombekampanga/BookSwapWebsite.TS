@@ -5,13 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0ec4e1dc-aa4a-4f19-afd7-60a385752ce5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/models/AddListingRequestDto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/models/GenreDto.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/models/UpdateListingRequestDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/api-calls/my-account.router.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/controllers/account.controller.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/models/NotificationDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/models/RequestDto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/repositories/account.repository.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/services/account.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/api-calls/listings.router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/api-calls/listings.router.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/controllers/listings.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controllers/listings.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/repositories/db.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/db.repository.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/repositories/listings.respository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/listings.respository.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/services/listings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/listings.service.ts" afterDir="false" />
     </list>
@@ -78,7 +80,7 @@
       <workItem from="1709775804488" duration="3861000" />
       <workItem from="1709780696375" duration="27841000" />
       <workItem from="1709842980100" duration="6189000" />
-      <workItem from="1709849218467" duration="12226000" />
+      <workItem from="1709849218467" duration="22763000" />
     </task>
     <servers />
   </component>
@@ -93,6 +95,12 @@
           <line>47</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/backend/src/api-calls/my-account.router.ts</url>
+          <line>22</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

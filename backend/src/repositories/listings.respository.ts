@@ -1,16 +1,9 @@
-import mysql, {RowDataPacket} from "mysql2";
 import {DbRepository} from "./db.repository.js"
 import {BookEntity} from "../models/BookEntity.js";
 import {GenreDto} from "../models/GenreDto";
 import {AddListingRequestDto} from "../models/AddListingRequestDto";
 import {UpdateListingRequestDto} from "../models/UpdateListingRequestDto";
 
-const db = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    password: process.env.SQL_PASS,
-    database: "bookswap",
-});
 export class ListingsRepository {
     private dbRepository : DbRepository;
 
@@ -27,7 +20,7 @@ export class ListingsRepository {
     GetUserListings = (async (userId: string): Promise<BookEntity[]> => {
         console.log("listings.repository.GetUserListings called")
         const sqlSelect = "SELECT * FROM books WHERE userId = ? AND active = true";
-        return await this.dbRepository.executeQueryWithParameter(sqlSelect, userId)
+        return await this.dbRepository.executeQueryWithParameter<BookEntity>(sqlSelect, userId)
     })
 
     GetFilteredGenreListings = (async (genres: string[]): Promise<BookEntity[]> => {
@@ -44,13 +37,13 @@ export class ListingsRepository {
         }
 
         console.log(sqlSelect);
-        return await this.dbRepository.executeQuery(sqlSelect)
+        return await this.dbRepository.executeQuery<BookEntity>(sqlSelect)
     })
 
-    GetMyListings = (async (userId: string): Promise<BookEntity[]> => {
+    GetMyListings = (async (userId: string, isActive: boolean): Promise<BookEntity[]> => {
         console.log("listings.repository.GetMyListings called")
-        const sqlSelect = "SELECT * FROM books WHERE userId = ? AND active = true";
-        return await this.dbRepository.executeQueryWithParameter(sqlSelect, userId)
+        const sqlSelect = "SELECT * FROM books WHERE userId = ? AND active = ?";
+        return await this.dbRepository.executeQueryWithParameters<BookEntity>(sqlSelect, [userId, isActive])
     })
 
     AddListing = (async (addListingsRequestDto: AddListingRequestDto): Promise<BookEntity[]> => {
@@ -96,7 +89,7 @@ export class ListingsRepository {
         const sqlUpdate =
             "UPDATE books SET title = ?, author = ?, genres = ?, description = ?, image = ?, swap = ?, giveAway = ?, modifiedOn = CURRENT_TIMESTAMP WHERE id = ? AND userId = ?";
 
-        return await this.dbRepository.executeQueryWithParameters(
+        return await this.dbRepository.executeQueryWithParameters<BookEntity>(
             sqlUpdate,
             [
                 bookTitle,
@@ -114,30 +107,30 @@ export class ListingsRepository {
     UpdateListingFromApprovedRequest = (async (bookId: string, userId: string, status: string): Promise<BookEntity[]> => {
         const sqlUpdate =
             "UPDATE books SET active = false, closedOn = CURRENT_TIMESTAMP, status = ?  WHERE id = ? AND userId = ?";
-        return await this.dbRepository.executeQueryWithParameters(sqlUpdate, [status, bookId, userId])
+        return await this.dbRepository.executeQueryWithParameters<BookEntity>(sqlUpdate, [status, bookId, userId])
     })
 
     UpdateListingFromDeclinedRequest = (async (bookId: string, userId: string): Promise<BookEntity[]> => {
         const sqlUpdate =
             "UPDATE books SET requested = IF (numberOfRequests = 1, false, true), numberOfRequests = numberOfRequests-1  WHERE id = ? AND userId = ?";
-        return await this.dbRepository.executeQueryWithParameters(sqlUpdate, [bookId, userId])
+        return await this.dbRepository.executeQueryWithParameters<BookEntity>(sqlUpdate, [bookId, userId])
     })
 
     UpdateListingWhenRequested = (async (bookId: string, userId: string): Promise<BookEntity[]> => {
         const sqlUpdate =
             "UPDATE books SET numberOfRequests = numberOfRequests+1, requested = true WHERE id = ? AND userId = ?;";
-        return await this.dbRepository.executeQueryWithParameters(sqlUpdate, [bookId, userId])
+        return await this.dbRepository.executeQueryWithParameters<BookEntity>(sqlUpdate, [bookId, userId])
     })
 
     DeleteListing = (async (bookId: string, userId: string): Promise<BookEntity[]> => {
         const sqlDelete = "DELETE FROM books WHERE id = ? AND userId = ?";
-        return await this.dbRepository.executeQueryWithParameters(sqlDelete, [bookId, userId])
+        return await this.dbRepository.executeQueryWithParameters<BookEntity>(sqlDelete, [bookId, userId])
     })
 
     GetBook = (async (bookId: string): Promise<BookEntity[]> => {
         console.log("listings.repository.GetBook called")
         const sqlSelect = "SELECT * FROM books WHERE id = ? AND active = true";
-        return await this.dbRepository.executeQueryWithParameter(sqlSelect, bookId)
+        return await this.dbRepository.executeQueryWithParameter<BookEntity>(sqlSelect, bookId)
     })
 
     GetGenres = (async (): Promise<GenreDto[]> => {

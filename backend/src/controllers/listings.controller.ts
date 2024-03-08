@@ -53,12 +53,12 @@ export class ListingsController {
         }
     })
 
-
-    GetMyListings = (async (req, res: Response) => {
+    GetMyActiveListings = (async (req, res: Response) => {
         const userId: string = req.query.userId;
+        const isActive = true
 
         try {
-            const listings = await this.listingsService.GetMyListings(userId);
+            const listings = await this.listingsService.GetMyListings(userId, isActive);
             console.log("my listings received");
             console.log(listings);
             res.send(listings)
@@ -164,7 +164,7 @@ export class ListingsController {
         const userId = req.body.userId;
 
         try {
-            const listings = await this.listingsService.DeleteListing(bookId, userId);
+            await this.listingsService.DeleteListing(bookId, userId);
             res.status(200)
         }
         catch (e) {
