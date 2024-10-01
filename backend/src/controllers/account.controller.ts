@@ -1,6 +1,6 @@
-import {AccountService} from "../services/account.service";
+import {AccountService} from "../services/account.service.js";
 import {Request, Response} from "express";
-import {ListingsService} from "../services/listings.service";
+import {ListingsService} from "../services/listings.service.js";
 
 export class AccountController {
     private accountService: AccountService

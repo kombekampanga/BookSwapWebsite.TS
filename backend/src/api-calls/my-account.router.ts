@@ -50,3 +50,7 @@ accountRouter.get("/lost/get", checkJwt, accountController.GetBooksLost)
 
 // Get specific request info for books requested from me
 accountRouter.get("/others-requests/get/:requestId", checkJwt, accountController.GetRequestDetails)
+
+export {
+    accountRouter
+};

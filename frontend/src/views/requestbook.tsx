@@ -30,20 +30,22 @@ const RequestABook = () => {
     const getRequestedBook = async () => {
         Axios.get<BookDto>(serverUrl + `/api/listings/get/bookId=${requestedBookId}`)
             .then((response) => {
-                setRequestedBook(response.data[0]);
+                const requestedBook = response.data
+                console.log(requestedBook)
+                setRequestedBook(requestedBook);
 
                 // if only offering a swap then make wantToSwap = true
                 // else if only offering a swap then make wantToSwap = true
                 if (
-                    !!response.data[0].swap === true &&
-                    !!response.data[0].giveAway === false
+                    !!requestedBook.swap === true &&
+                    !!requestedBook.giveAway === false
                 ) {
                     console.log("only available to swap");
                     setOnlyAvailableToSwap(true);
                     setWantToSwap(true);
                 } else if (
-                    !!response.data[0].giveAway === true &&
-                    !!response.data[0].swap === false
+                    !!requestedBook.giveAway === true &&
+                    !!requestedBook.swap === false
                 ) {
                     console.log("No swap requested");
                     setOnlyAvailableToGiveAway(true);
@@ -112,8 +114,6 @@ const RequestABook = () => {
                             notificationResponse,
                         });
                         setSubmitting(false);
-                        alert("Book requested");
-                        window.open("http://localhost:4040/myaccount", "_self");
                     }
                 )
             )
@@ -135,11 +135,14 @@ const RequestABook = () => {
                     bookTitle: requestedBook?.title,
                     requesterEmail: user?.email,
                 },
-                "user_YEtRXLga6A6g1bNvKKVwb"
+                "9pfWf_52ofm0UhSvM"
+                //"user_YEtRXLga6A6g1bNvKKVwb"
             )
             .then(
                 function (response) {
                     console.log("SUCCESS!", response.status, response.text);
+                    alert("Book requested");
+                    window.open("http://localhost:4040/myaccount", "_self");
                 },
                 function (error) {
                     console.log("FAILED...", error);
@@ -162,9 +165,14 @@ const RequestABook = () => {
                     <img
                         src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637477634/missing-picture-page-for-website_dmujoj.jpg"
                         alt="Listing Image"
+                        style={{ maxWidth: "100%", maxHeight: "300px" }}
+
                     />
                 ) : (
-                    <img src={requestedBook?.image} alt="Listing Image" />
+                    <img
+                        src={requestedBook?.image} alt="Listing Image"
+                        style={{ maxWidth: "100%", maxHeight: "300px" }}
+                    />
                 )}
 
                 <p>{requestedBook?.genres}</p>

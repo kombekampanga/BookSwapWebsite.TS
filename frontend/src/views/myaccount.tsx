@@ -185,9 +185,12 @@ const MyAccount = () => {
                                         X
                                     </button>
                                 </div>
-
-                                <h4>Swap Confirmed Notifications</h4>
-                                <p>{val.message}</p>
+                                <div>
+                                    <h4>Swap Confirmed Notifications</h4>
+                                </div>
+                                <div>
+                                    <p>{val.message}</p>
+                                </div>
                             </div>
                         );
                     })}
@@ -212,9 +215,13 @@ const MyAccount = () => {
                                     <img
                                         src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637478934/missing-picture-page-for-website_dmujoj.jpg"
                                         alt="No Image"
+                                        style={{ maxWidth: "100%", maxHeight: "200px" }}
                                     />
                                 ) : (
-                                    <img src={bookRequest.image} alt="Listing Image" />
+                                    <img
+                                        src={bookRequest.image} alt="Listing Image"
+                                        style={{ maxWidth: "100%", maxHeight: "200px" }}
+                                    />
                                 )}
                                 <h4>By {bookRequest.author}</h4>
                                 <h5>{bookRequest.genres}</h5>
@@ -248,9 +255,13 @@ const MyAccount = () => {
                                     <img
                                         src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637478934/missing-picture-page-for-website_dmujoj.jpg"
                                         alt="No Image"
+                                        style={{ maxWidth: "100%", maxHeight: "200px" }}
                                     />
                                 ) : (
-                                    <img src={bookRequest.image} alt="Listing Image" />
+                                    <img
+                                        src={bookRequest.image} alt="Listing Image"
+                                        style={{ maxWidth: "100%", maxHeight: "200px" }}
+                                    />
                                 )}
                                 <h4>By {bookRequest.author}</h4>
                                 <h5>{bookRequest.genres}</h5>

@@ -64,6 +64,18 @@
   align-items: center;
 }
 
+.notification-card {
+  display: flex;
+  width: 800px;
+  height: 550px;
+  border: 2px solid black;
+  border-radius: 15px;
+  margin: 20px;
+  font-family: "Trebuchet MS";
+  justify-content: center;
+  align-items: center;
+}
+
 #updateInput {
   width: 100px;
   height: 20px;

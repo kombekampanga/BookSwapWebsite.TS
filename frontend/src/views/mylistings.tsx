@@ -7,6 +7,7 @@ import {ListingsDto} from "../models/ListingsDto";
 import {BookDto} from "../models/BookDto";
 import {GenreDto} from "../models/GenreDto";
 import {UpdateListingRequestDto} from "../models/UpdateListingRequestDto";
+import MyEditableBookList from "../components/MyEditableBookList";
 
 
 Modal.setAppElement("#root");
@@ -131,21 +132,18 @@ const MyListings = () => {
 
         // Add to database
         const addListingToDatabase = (imageUrl: string) => {
-            const updateListingsRequest: UpdateListingRequestDto = {
-                userId: userId,
-                bookId: bookId,
-                bookTitle: updatedBookTitle,
-                bookAuthor: updatedBookAuthor,
-                bookGenres: updatedBookGenres.toString(),
-                bookDescription: updatedBookDescription,
-                bookImageUrl: imageUrl,
-                availableForSwap: updatedAvailableForSwap,
-                availableToGiveAway: updatedAvailableToGiveAway,
-            }
             Axios.put(
                 serverUrl + "/api/listings/my-listings/update",
                 {
-                    updateListingsRequest
+                    userId: userId,
+                    bookId: bookId,
+                    bookTitle: updatedBookTitle,
+                    bookAuthor: updatedBookAuthor,
+                    bookGenres: updatedBookGenres.toString(),
+                    bookDescription: updatedBookDescription,
+                    bookImageUrl: imageUrl,
+                    availableForSwap: updatedAvailableForSwap,
+                    availableToGiveAway: updatedAvailableToGiveAway,
                 },
                 {
                     headers: {
@@ -163,7 +161,7 @@ const MyListings = () => {
                 .catch((err) => {
                     setSaving(false);
                     console.log(err.response);
-                    alert(err.response.data);
+                    alert(err.response.statusText);
                 });
         };
 
@@ -189,176 +187,140 @@ const MyListings = () => {
                 });
         } else {
             addListingToDatabase(updatedBookImageUrl);
+            setSaving(false);
+            alert(updatedBookTitle + " listing updated");
+            finishEditEventHandler();
+            window.location.reload();
         }
     };
 
-    const filterFunction = () => {
-        const input = document.getElementById("myInput")as HTMLInputElement;
-        const filter = input?.value.toUpperCase();
-        const div = document.getElementById("myDropdown");
-        let a = div?.getElementsByTagName("span");
-        if (a !== undefined){
-            for (let i = 0; i < a.length; i++) {
-                const txtValue = a[i].textContent || a[i].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    a[i].style.display = "";
-                } else {
-                    a[i].style.display = "none";
-                }
-            }
-        }
-    }
-
-    const myFunction = () => {
-        const dropdownElement = document.getElementById("myDropdown");
-
-        if (dropdownElement) { // Check if dropdownElement is not null
-            const currentDisplay = dropdownElement.style.display;
-
-            if (currentDisplay === "none") {
-                dropdownElement.style.display = "inline";
-            } else {
-                dropdownElement.style.display = "none";
-            }
-        }
-    }
-
     return (
       <div className="myListings">
-        {bookList.map((book) => {
-          return (
-            <div className="card">
-              <h1>{book.title}</h1>
-              <h4>By {book.author}</h4>
-              <p>{book.genres}</p>
-
-              <div id="editListing">
-                <button
-                  onClick={() => {
-                    editEventHandler(book);
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => {
-                    const deleteConfirmed = window.confirm(
-                      "Are you sure you want to delete this listing for " +
-                        book.title +
-                        "?"
-                    );
-                    if (deleteConfirmed) {
-                      console.log("Confirmed deletion");
-                      deleteListing(book.id);
-                    } else {
-                      console.log("pressed cancel");
-                    }
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          );
-        })}
-
-        {editIsOpen && (
+          <MyEditableBookList bookList={bookList} finishEditEventHandler={finishEditEventHandler} editEventHandler={editEventHandler} deleteListing={deleteListing}/>
+          {editIsOpen && (
           <div className="modalBackground">
-            <Modal
-              isOpen={editIsOpen}
-              contentLabel="My dialog"
-              className="mymodal"
-              overlayClassName="myoverlay"
-            >
-              <div className="xModalBtn">
-                <button
-                  onClick={() => {
-                    setEditIsOpen(false);
-                    setSelectedBook(undefined);
-                  }}
-                >
-                  X
-                </button>
-              </div>
+              <Modal
+                  isOpen={editIsOpen}
+                  contentLabel="My dialog"
+                  className="mymodal"
+                  overlayClassName="myoverlay"
+              >
+                  <div className="xModalBtn">
+                      <button
+                          onClick={() => {
+                              setEditIsOpen(false);
+                              setSelectedBook(undefined);
+                          }}
+                      >
+                          X
+                      </button>
+                  </div>
 
-              <div className="modalTitle">
-                <h1>Edit Your Listing</h1>
-              </div>
-              <div className="modalBody">
-                <label>Title:</label>
-                <input
-                  type="text"
-                  name="Title"
-                  defaultValue={selectedBook?.title}
-                  onChange={(e) => {
-                    setUpdatedBookTitle(e.target.value);
-                  }}
-                />
-                <label>Author:</label>
-                <input
-                  type="text"
-                  name="Author"
-                  defaultValue={selectedBook?.author}
-                  onChange={(e) => {
-                    setUpdatedBookAuthor(e.target.value);
-                  }}
-                />
-                <label>Genre:</label>
-                <input
-                  type="text"
-                  name="Genre"
-                  defaultValue={selectedBook?.genres}
-                  onChange={(e) => {
-                      setUpdatedBookGenres([e.target.value]);
-                  }}
-                />
-              </div>
-              <div className="modalFooter">
-                <button
-                  onClick={() => {
-                    setEditIsOpen(false);
-                    setSelectedBook(undefined);
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                      if (selectedBook == undefined){
-                          finishEditEventHandler()
-                      } else {
-                          updateListing(selectedBook?.id);
-                      }
+                  <div className="modalTitle">
+                      <h1>Edit Your Listing</h1>
+                  </div>
+                  <div className="modalBody">
+                      <div>
+                          <label>Title:</label>
+                          <input
+                              type="text"
+                              name="Title"
+                              defaultValue={selectedBook?.title}
+                              onChange={(e) => {
+                                  setUpdatedBookTitle(e.target.value);
+                              }}
+                          />
+                      </div>
+                      <div>
+                          <label>Author:</label>
+                          <input
+                              type="text"
+                              name="Author"
+                              defaultValue={selectedBook?.author}
+                              onChange={(e) => {
+                                  setUpdatedBookAuthor(e.target.value);
+                              }}
+                          />
+                      </div>
+                      <div>
+                          <label>Genre:</label>
+                          <input
+                              type="text"
+                              name="Genre"
+                              defaultValue={selectedBook?.genres}
+                              onChange={(e) => {
+                                  setUpdatedBookGenres([e.target.value]);
+                              }}
+                          />
+                      </div>
+                      <div>
+                          <label>Upload new image:</label>
 
-                  }}
-                >
-                  Save
-                </button>
-                <button
-                  id="deleteBtn"
-                  onClick={() => {
-                    const deleteConfirmed = window.confirm(
-                      "Are you sure you want to delete this listing for " +
-                        selectedBook?.title +
-                        "?"
-                    );
-                    if (deleteConfirmed && selectedBook?.id !== undefined) {
-                      console.log("Confirmed deletion");
-                      deleteListing(selectedBook?.id);
-                    } else {
-                      console.log("pressed cancel");
-                    }
-                  }}
-                >
-                  Delete Listing
-                </button>
-              </div>
-            </Modal>
+                          <input
+                              type="file"
+                              name="Picture"
+                              onChange={(e) => {
+                                  if (e.target.files && e.target.files.length !== 0) {
+                                      setUploadedBookImage(e.target.files[0]);
+                                      const imageElement = document.getElementById("updateListingImage") as HTMLImageElement;
+                                      if (imageElement) {
+                                          imageElement.src = window.URL.createObjectURL(e.target.files[0]);
+                                      }
+                                  }
+                              }}
+                          />
+                          <img
+                              id="updateListingImage"
+                              src={selectedBook?.image !== "" ? updatedBookImageUrl : "https://res.cloudinary.com/dmxlueraz/image/upload/v1637477634/missing-picture-page-for-website_dmujoj.jpg"}
+                              alt="Listing Image"
+                              style={{maxWidth: "100%", maxHeight: "300px"}} // Adjust the maxHeight as needed
+                          />
+                      </div>
+                  </div>
+                  <div className="modalFooter">
+                      <button
+                          onClick={() => {
+                              setEditIsOpen(false);
+                              setSelectedBook(undefined);
+                          }}
+                      >
+                          Cancel
+                      </button>
+                      <button
+                          onClick={() => {
+                              if (selectedBook == undefined) {
+                                  finishEditEventHandler()
+                              } else {
+                                  updateListing(selectedBook?.id);
+                              }
+                          }}
+                      >
+                          Save
+                      </button>
+                      <button
+                          id="deleteBtn"
+                          onClick={() => {
+                              const deleteConfirmed = window.confirm(
+                                  "Are you sure you want to delete this listing for " +
+                                  selectedBook?.title +
+                                  "?"
+                              );
+                              if (deleteConfirmed && selectedBook?.id !== undefined) {
+                                  console.log("Confirmed deletion");
+                                  deleteListing(selectedBook?.id);
+                              } else {
+                                  console.log("pressed cancel");
+                              }
+                          }}
+                      >
+                          Delete Listing
+                      </button>
+                  </div>
+              </Modal>
           </div>
-        )}
+          )}
       </div>
     );
-
 };
 
 export {MyListings};

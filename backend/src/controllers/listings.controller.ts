@@ -70,8 +70,17 @@ export class ListingsController {
     })
 
     AddListing = (async (req: Request, res: Response) => {
-        const addListingRequest = req.body.updateListingsRequest;
-
+        const addListingRequest: AddListingRequestDto = {
+            imageUrl: req.body.imageUrl,
+            userId: req.body.userId,
+            userEmail: req.body.userEmail,
+            bookTitle: req.body.bookTitle,
+            bookAuthor: req.body.bookAuthor,
+            bookGenres: req.body.bookGenres,
+            availableForSwap: req.body.availableForSwap,
+            availableToGiveAway: req.body.availableToGiveAway,
+            bookDescription: req.body.bookDescription,
+        };
         try {
             const listings = await this.listingsService.AddListing(addListingRequest);
             res.send(listings)
@@ -83,10 +92,19 @@ export class ListingsController {
     })
 
     UpdateListing = (async (req: Request, res: Response) => {
-        const updateListingsRequest = req.body.updateListingRequest
-
+        const updateListingRequest: UpdateListingRequestDto = {
+            userId: req.body.userId,
+            bookId: req.body.bookId,
+            bookTitle: req.body.bookTitle,
+            bookAuthor: req.body.bookAuthor,
+            bookGenres: req.body.bookGenres,
+            bookDescription: req.body.bookDescription,
+            bookImageUrl: req.body.bookImageUrl,
+            availableForSwap: req.body.availableForSwap,
+            availableToGiveAway: req.body.availableToGiveAway,
+        }
         try {
-            const listings = await this.listingsService.UpdateListing(updateListingsRequest);
+            const listings = await this.listingsService.UpdateListing(updateListingRequest);
             res.status(200)
         }
         catch (e) {

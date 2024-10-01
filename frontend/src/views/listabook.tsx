@@ -6,6 +6,7 @@ import { Checkbox, FormControlLabel } from "@material-ui/core";
 import {BookDto} from "../models/BookDto";
 import {GenreDto} from "../models/GenreDto";
 import {AddListingRequestDto} from "../models/AddListingRequestDto";
+import MyBookList from "../components/MyBookList";
 
 const ListABook = () => {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -99,23 +100,19 @@ const ListABook = () => {
             console.log([genreString]);
             console.log(new Set([genreString]));
 
-            const addListingsRequest: AddListingRequestDto = {
-                imageUrl: response.data.url,
-                userId: userId,
-                userEmail: email,
-                bookTitle: bookTitle,
-                bookAuthor: bookAuthor,
-                bookGenres: genreString,
-                bookDescription: bookDescription,
-                availableForSwap: availableForSwap,
-                availableToGiveAway: availableToGiveAway,
-            }
-
             // Add to database
             Axios.post(
                 serverUrl + "/api/listings/my-listings/insert",
                {
-                   addListingRequest: addListingsRequest
+                   imageUrl: response.data.url,
+                   userId: userId,
+                   userEmail: email,
+                   bookTitle: bookTitle,
+                   bookAuthor: bookAuthor,
+                   bookGenres: genreString,
+                   bookDescription: bookDescription,
+                   availableForSwap: availableForSwap,
+                   availableToGiveAway: availableToGiveAway,
                },
                 {
                   headers: {
@@ -126,9 +123,10 @@ const ListABook = () => {
               setSubmitting(false);
               alert("Listing Added");
               window.location.reload();
-              // Array.from(document.querySelectorAll("input")).forEach(
-              //   (input) => (input.value = "")
-              //);
+            }).catch((err) => {
+                setSubmitting(false);
+                console.log(err.response);
+                alert(err.response.statusText)
             });
           })
           .catch((err) => {
@@ -238,12 +236,6 @@ const ListABook = () => {
             <br />
             <br />
 
-                {/* <input
-              type="text"
-              name="Genre"
-              onChange={(e) => setBookGenre(e.target.value)}
-            /> */}
-
             <label>Description:</label>
             <textarea
                 className="description"
@@ -271,6 +263,7 @@ const ListABook = () => {
                 id="newListingImage"
                 src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637477634/missing-picture-page-for-website_dmujoj.jpg"
                 alt="Listing Image"
+                style={{ maxWidth: "100%", maxHeight: "300px" }}
             />
             <br />
 
@@ -334,23 +327,7 @@ const ListABook = () => {
 
           <h1>My Listings</h1>
           <br />
-          {bookList.map((book) => {
-            return (
-              <div className="card">
-                <h1>{book.title}</h1>
-                {book.image === "" ? (
-                <img
-                  src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637477634/missing-picture-page-for-website_dmujoj.jpg"
-                  alt="Listing Image"
-                />
-                ) : (
-                  <img src={book.image} alt="Listing Image" />
-                )}
-                <h4>By {book.author}</h4>
-                <p>{book.genres}</p>
-              </div>
-            );
-          })}
+          <MyBookList bookList={bookList}/>
         </div>
       </div>
     )

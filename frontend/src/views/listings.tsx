@@ -6,6 +6,7 @@ import {BookDto} from "../models/BookDto";
 import {GenreDto} from "../models/GenreDto";
 import qs from "qs";
 import BookList from "../components/BookList";
+import GenreFilterDropdown from "../components/GenreFilterDropdown";
 
 
 const Listings = () => {
@@ -48,36 +49,7 @@ const Listings = () => {
         getGenres();
     }, [serverUrl]);
 
-    const filterFunction = () => {
-        const input = document.getElementById("myInput")as HTMLInputElement;
-        const filter = input?.value.toUpperCase();
-        const div = document.getElementById("myDropdown");
-        let a = div?.getElementsByTagName("span");
-        if (a !== undefined){
-            for (let i = 0; i < a.length; i++) {
-                const txtValue = a[i].textContent || a[i].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    a[i].style.display = "";
-                } else {
-                    a[i].style.display = "none";
-                }
-            }
-        }
-    }
 
-    const myFunction = () => {
-        const dropdownElement = document.getElementById("myDropdown");
-
-        if (dropdownElement) { // Check if dropdownElement is not null
-            const currentDisplay = dropdownElement.style.display;
-
-            if (currentDisplay === "none") {
-                dropdownElement.style.display = "inline";
-            } else {
-                dropdownElement.style.display = "none";
-            }
-        }
-    }
 
     const filterByGenres = () => {
         const genres = Array.from(
@@ -110,66 +82,23 @@ const Listings = () => {
 
     return (
         <div className="allListings">
+            <input
+                style={{
+                    border: "3px solid #555",
+                    borderRadius: "5px",
+                    marginRight: "10px",
+                    padding: "12px 20px",
+                }}
+                type="search"
+                placeholder="Search title.."
+                id="searchForBook"
+                onKeyUp={(e) => {
+                    //TODO
+                    console.log("hello");
+                }}
+            />
             <span>
-                <input
-                    style={{
-                        border: "3px solid #555",
-                        borderRadius: "5px",
-                        marginRight: "10px",
-                        padding: "12px 20px",
-                    }}
-                    type="search"
-                    placeholder="Search.."
-                    id="searchForBook"
-                    onKeyUp={(e) => {
-                        console.log("hello");
-                    }}
-                />
-                <div className="dropdown">
-                    <button
-                        onClick={(e) => {
-                            myFunction();
-                        }}
-                        className="dropbtn"
-                    >
-                        Search by genre
-                    </button>
-                    <div
-                        style={{
-                            overflow: "scroll",
-                            maxHeight: "500px",
-                        }}
-                        id="myDropdown"
-                        className="dropdown-content"
-                    >
-                        <input
-                            type="text"
-                            placeholder="Search.."
-                            id="myInput"
-                            onKeyUp={(e) => {
-                                filterFunction();
-                            }}
-                        />
-                        {genreList.map((genre) => {
-                            return (
-                                <span>
-                                    <input
-                                        style={{ width: "20px", height: "20px" }}
-                                        type="checkbox"
-                                        id={genre.genre}
-                                        name={genre.genre}
-                                        value={genre.genre}
-                                        onClick={(e) => {
-                                            filterByGenres();
-                                        }}
-                                    />
-                                    <label htmlFor={genre.genre}>{genre.genre}</label>
-                                    <br></br>
-                                </span>
-                            );
-                        })}
-                    </div>
-                </div>
+                <GenreFilterDropdown genreList={genreList} filterByGenres={filterByGenres}/>
             </span>
             <BookList bookList={bookList} userId={userId}/>
         </div>

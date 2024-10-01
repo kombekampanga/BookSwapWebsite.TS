@@ -10,7 +10,7 @@ import { clientOrigins, serverPort } from "./config/env.dev.js";
 import { messagesRouter } from "./messages/messages.router.js";
 import { listingsRouter } from "./api-calls/listings.router.js";
 import { usersRouter } from "./api-calls/users.router.js";
-
+import {accountRouter} from "./api-calls/my-account.router.js";
 /**
  * App Variables
  */
@@ -35,6 +35,7 @@ app.use("/api", apiRouter);
 apiRouter.use("/messages", messagesRouter);
 apiRouter.use("/listings", listingsRouter);
 apiRouter.use("/users", usersRouter);
+apiRouter.use("/my-account", accountRouter);
 
 app.use(function (err, req, res, next) {
   console.log(err);

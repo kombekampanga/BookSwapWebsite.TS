@@ -1,8 +1,4 @@
-import {AccountRepository} from "../repositories/account.repository"
-import {AddListingRequestDto} from "../models/AddListingRequestDto";
-import {ListingsDto} from "../models/ListingsDto";
-import {BookEntity} from "../models/BookEntity";
-import {MapToBookDto} from "../helpers/book.mapper";
+import {AccountRepository} from "../repositories/account.repository.js"
 
 export class AccountService {
     private accountRepository: AccountRepository;
@@ -87,7 +83,7 @@ export class AccountService {
         }
     }
 
-    RequestBook = async (bookId: string, listerId: number, requesterId: number, swap:boolean, requesterEmail: string)=> {
+    RequestBook = async (bookId: string, listerId: string, requesterId: string,  swap:boolean, requesterEmail: string)=> {
         try {
             console.log("account.service.RequestBook called")
             await this.accountRepository.RequestBook(bookId, listerId, requesterId, swap, requesterEmail);
@@ -97,7 +93,7 @@ export class AccountService {
         }
     }
 
-    UpdateRequest = async (requestId: number, status: string, swappedBookId: number, listerId: number)=> {
+    UpdateRequest = async (requestId: string, status: string, swappedBookId: string, listerId: string)=> {
         try {
             console.log("account.service.UpdateRequest called")
             await this.accountRepository.UpdateRequest(requestId, status, swappedBookId, listerId);

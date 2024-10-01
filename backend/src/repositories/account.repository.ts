@@ -1,10 +1,8 @@
-import {DbRepository} from "./db.repository";
-import {NotificationDto} from "../models/NotificationDto";
-import {BooksRequestedByUserDto} from "../models/BooksRequestedByUserDto";
-import {BooksRequestedFromUserDto} from "../models/BooksRequestedFromUserDto";
+import {DbRepository} from "./db.repository.js";
+import {NotificationDto} from "../models/NotificationDto.js";
+import {BooksRequestedByUserDto} from "../models/BooksRequestedByUserDto.js";
+import {BooksRequestedFromUserDto} from "../models/BooksRequestedFromUserDto.js";
 import {RequestDto} from "../models/RequestDto";
-import {BookEntity} from "../models/BookEntity";
-import {BookDto} from "../models/BookDto";
 
 export class AccountRepository {
     private dbRepository : DbRepository;
@@ -56,14 +54,14 @@ export class AccountRepository {
         return await this.dbRepository.executeQueryWithParameter<BooksRequestedByUserDto>(sqlSelect, userId)
     })
 
-    RequestBook = (async (bookId: string, listerId: number, requesterId: number, swap: boolean, requesterEmail: string): Promise<any[]> => {
+    RequestBook = (async (bookId: string, listerId: string, requesterId: string, swap: boolean, requesterEmail: string): Promise<any[]> => {
         const sqlInsert =
             "INSERT INTO requests (bookId, listerId, requesterId, requesterEmail, swap, active, status) VALUES (?,?,?,?,?,TRUE,'open')";
 
         return await this.dbRepository.executeQueryWithParameters(sqlInsert, [bookId, listerId, requesterId, requesterEmail, swap])
     })
 
-    UpdateRequest = (async (requestId: number, status: string, swappedBookId: number, listerId: number): Promise<RequestDto[]> => {
+    UpdateRequest = (async (requestId: string, status: string, swappedBookId: string, listerId: string): Promise<RequestDto[]> => {
         const sqlUpdate =
             "UPDATE requests SET active = false, status = ?, closedOn = CURRENT_TIMESTAMP, swappedBook = ? WHERE id = ? AND listerId = ?";
         return await this.dbRepository.executeQueryWithParameters<RequestDto>(sqlUpdate, [status, swappedBookId, requestId, listerId])

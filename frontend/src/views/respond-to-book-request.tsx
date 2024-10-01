@@ -36,21 +36,22 @@ const RespondToBookRequest = () => {
     const getRequestedBook = async () => {
         Axios.get<BookDto>(serverUrl + `/api/listings/get/bookId=${requestedBookId}`)
             .then((response) => {
-                console.log(response.data);
-                setRequestedBook(response.data[0]);
+                const requestedBook = response.data
+                console.log(requestedBook);
+                setRequestedBook(requestedBook);
 
                 // if only offering a swap then make wantToSwap = true
                 // else if only offering a swap then make wantToSwap = true
                 if (
-                    !!response.data[0].swap === true &&
-                    !!response.data[0].giveAway === false
+                    !!requestedBook.swap === true &&
+                    !!requestedBook.giveAway === false
                 ) {
                     console.log("only availble to swap");
                     setOnlyAvailableToSwap(true);
                     setWantToSwap(true);
                 } else if (
-                    !!response.data[0].giveAway === true &&
-                    !!response.data[0].swap === false
+                    !!requestedBook.giveAway === true &&
+                    !!requestedBook.swap === false
                 ) {
                     console.log("No swap requested");
                     setOnlyAvailableToGiveAway(true);
@@ -74,10 +75,11 @@ const RespondToBookRequest = () => {
             },
         })
             .then((response) => {
-                console.log(response.data);
-                setRequestInfo(response.data[0]);
+                const requestInfo = response.data
+                console.log(requestInfo);
+                setRequestInfo(requestInfo);
 
-                if (!!response.data[0].swap === false) {
+                if (!!requestInfo.swap === false) {
                     setOnlyRequestingGiveAway(true);
                     setGiveAway(true);
                 }
@@ -85,7 +87,7 @@ const RespondToBookRequest = () => {
                 // Get requesters listings
                 Axios.get<BookDto[]>(
                     serverUrl +
-                    `/api/listings/get/userId=${response.data[0].requesterId}`,
+                    `/api/listings/get/userId=${requestInfo.requesterId}`,
                     {}
                 ).then((response) => {
                     console.log(response.data);
@@ -156,7 +158,7 @@ const RespondToBookRequest = () => {
         const sendNotification = Axios.post(
             serverUrl + "/api/my-account/notifications/swap-confirmed/insert",
             {
-                requesterId: requestInfo?.requesterId,
+                userId: requestInfo?.requesterId,
                 message:
                     "Woohoo! Your request for " +
                     requestedBook?.title +
@@ -218,16 +220,20 @@ const RespondToBookRequest = () => {
                 "service_39oqr2j",
                 "template_p97f7y7",
                 {
+                    subject: "accepted",
                     userEmail: requestInfo?.requesterEmail,
                     bookTitle: requestedBook?.title,
                     listerEmail: requestedBook?.userEmail,
                     message: `Your request for ${requestedBook?.title} has been accepted! View your request`,
                     listerContactMessage: `Please contact ${requestedBook?.userEmail} to organise the swap.`,
                 },
-                "user_YEtRXLga6A6g1bNvKKVwb"
+                "9pfWf_52ofm0UhSvM"
             )
             .then(
                 function (response) {
+                    setSubmitting(false);
+                    alert("Book request accepted");
+                    window.open("http://localhost:4040/myaccount", "_self");
                     console.log("SUCCESS!", response.status, response.text);
                 },
                 function (error) {
@@ -272,7 +278,7 @@ const RespondToBookRequest = () => {
         const sendNotification = Axios.post(
             serverUrl + "/api/my-account/notifications/swap-confirmed/insert",
             {
-                requesterId: requestInfo?.requesterId,
+                userId: requestInfo?.requesterId,
                 message: "Your request for " + requestedBook?.title + " was declined :(",
             },
             {
@@ -314,11 +320,14 @@ const RespondToBookRequest = () => {
                     message: `Your request for ${requestedBook?.title} has been declined. View your request`,
                     listerContactMessage: "",
                 },
-                "user_YEtRXLga6A6g1bNvKKVwb"
+                "9pfWf_52ofm0UhSvM"
             )
             .then(
                 function (response) {
                     console.log("SUCCESS!", response.status, response.text);
+                    setSubmitting(false);
+                    alert("Book request declined");
+                    window.open("http://localhost:4040/myaccount", "_self");
                 },
                 function (error) {
                     console.log("FAILED...", error);
@@ -342,9 +351,13 @@ const RespondToBookRequest = () => {
                     <img
                         src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637477634/missing-picture-page-for-website_dmujoj.jpg"
                         alt="Listing Image"
+                        style={{ maxWidth: "100%", maxHeight: "300px" }}
                     />
                 ) : (
-                    <img src={requestedBook?.image} alt="Listing Image" />
+                    <img
+                        src={requestedBook?.image} alt="Listing Image"
+                        style={{ maxWidth: "100%", maxHeight: "300px" }}
+                    />
                 )}
 
                 <p>{requestedBook?.genres}</p>
@@ -429,9 +442,13 @@ const RespondToBookRequest = () => {
                                 <img
                                     src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637477634/missing-picture-page-for-website_dmujoj.jpg"
                                     alt="Listing Image"
+                                    style={{ maxWidth: "100%", maxHeight: "200px" }}
                                 />
                             ) : (
-                                <img src={book.image} alt="Listing Image" />
+                                <img
+                                    src={book.image} alt="Listing Image"
+                                    style={{ maxWidth: "100%", maxHeight: "200px" }}
+                                />
                             )}
                             <h4>By {book.author}</h4>
                             <p>{book.genres}</p>
@@ -502,9 +519,14 @@ const RespondToBookRequest = () => {
                                     <img
                                         src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637477634/missing-picture-page-for-website_dmujoj.jpg"
                                         alt="Listing Image"
+                                        style={{ maxWidth: "100%", maxHeight: "300px" }}
                                     />
                                 ) : (
-                                    <img src={requestedBook?.image} alt="Listing Image" />
+                                    <img
+                                        src={requestedBook?.image}
+                                        alt="Listing Image"
+                                        style={{ maxWidth: "100%", maxHeight: "300px" }}
+                                    />
                                 )}
 
                                 <p>{requestedBook?.genres}</p>
@@ -527,9 +549,13 @@ const RespondToBookRequest = () => {
                                             <img
                                                 src="https://res.cloudinary.com/dmxlueraz/image/upload/v1637477634/missing-picture-page-for-website_dmujoj.jpg"
                                                 alt="Listing Image"
+                                                style={{ maxWidth: "100%", maxHeight: "300px" }}
                                             />
                                         ) : (
-                                            <img src={bookToSwap?.image} alt="Listing Image" />
+                                            <img
+                                                src={bookToSwap?.image} alt="Listing Image"
+                                                style={{ maxWidth: "100%", maxHeight: "300px" }}
+                                            />
                                         )}
 
                                         <p>{bookToSwap?.genres}</p>
